@@ -1,0 +1,25 @@
+<h1>
+<body>
+{{.title}}
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Ports</th>
+    </tr>
+    {{range $idx, $c := .containers }}
+    <tr>
+      <td> {{ printf "%.15s" $c.ID }} </td>
+      <td> {{index $c.Names 0}} </td>
+      <td> {{ $c.Image }} </td>
+      <td>
+        {{range $idx, $port := $c.Ports}}
+          {{$port.PrivatePort}} -> <a href="http://localhost:{{$port.PublicPort}}">http://localhost:{{$port.PublicPort}}</a>
+        {{end}}
+      </td>
+    </tr>
+    {{end}}
+  </table>
+</body>
+</h1>
