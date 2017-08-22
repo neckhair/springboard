@@ -7,21 +7,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var client *docker.Client
+var containers []docker.APIContainers
+var err error
+
 func main() {
-	endpoint := "unix:///var/run/docker.sock"
-	client, err := docker.NewClient(endpoint)
+	client, err = docker.NewClient("unix:///var/run/docker.sock")
 	if err != nil {
 		panic(err)
 	}
 
+	fetchContainers()
+	startWebserver()
+}
+
+func fetchContainers() {
 	options := docker.ListContainersOptions{All: false}
-	containers, err := client.ListContainers(options)
+	containers, err = client.ListContainers(options)
 	if err != nil {
 		panic(err)
 	}
+}
 
+func startWebserver() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
+
+	router.Static("/assets", "./assets")
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
