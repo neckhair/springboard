@@ -1,44 +1,21 @@
 package main
 
 import (
-	"net/http"
+	"os"
 
-	"github.com/fsouza/go-dockerclient"
-	"github.com/gin-gonic/gin"
+	"github.com/neckhair/springboard/springboard"
 )
 
-var client *docker.Client
-var err error
+var webserverPort string
 
 func main() {
-	client, err = docker.NewClient("unix:///var/run/docker.sock")
+	err := springboard.InitializeDockerClient()
 	if err != nil {
 		panic(err)
 	}
 
-	startWebserver()
-}
-
-func fetchContainers() []docker.APIContainers {
-	options := docker.ListContainersOptions{All: false}
-	containers, err := client.ListContainers(options)
-	if err != nil {
-		panic(err)
+	if len(os.Args) > 1 {
+		webserverPort = os.Args[1]
 	}
-	return containers
-}
-
-func startWebserver() {
-	router := gin.Default()
-	router.LoadHTMLGlob("templates/*")
-
-	router.Static("/assets", "./assets")
-
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"containers": fetchContainers(),
-		})
-	})
-
-	router.Run(":8080")
+	springboard.StartWebserver(webserverPort)
 }
