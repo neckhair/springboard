@@ -8,7 +8,6 @@ import (
 )
 
 var client *docker.Client
-var containers []docker.APIContainers
 var err error
 
 func main() {
@@ -17,16 +16,16 @@ func main() {
 		panic(err)
 	}
 
-	fetchContainers()
 	startWebserver()
 }
 
-func fetchContainers() {
+func fetchContainers() []docker.APIContainers {
 	options := docker.ListContainersOptions{All: false}
-	containers, err = client.ListContainers(options)
+	containers, err := client.ListContainers(options)
 	if err != nil {
 		panic(err)
 	}
+	return containers
 }
 
 func startWebserver() {
@@ -37,7 +36,7 @@ func startWebserver() {
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"containers": containers,
+			"containers": fetchContainers(),
 		})
 	})
 
