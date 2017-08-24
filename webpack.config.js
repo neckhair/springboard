@@ -11,19 +11,10 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.(css)$/,
-        use: ['style-loader', 'css-loader']
-      }
+      { test: /\.(css)$/, use: ['style-loader', 'css-loader'] },
     ]
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default'],
-    }),
     new Uglify()
   ]
 }
