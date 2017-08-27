@@ -1,6 +1,10 @@
 package springboard
 
-import "github.com/fsouza/go-dockerclient"
+import (
+	"log"
+
+	"github.com/fsouza/go-dockerclient"
+)
 
 var dockerClient *docker.Client
 
@@ -24,4 +28,30 @@ func FetchContainers() []docker.APIContainers {
 		panic(err)
 	}
 	return containers
+}
+
+type APIEvents = docker.APIEvents
+type ContainerEventCallbackFunction func(*APIEvents)
+
+// ListenForContainerEvents subscribes to events on the docker deamon
+func ListenForContainerEvents(callback ContainerEventCallbackFunction) {
+	listener := make(chan *APIEvents)
+	err := dockerClient.AddEventListener(listener)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		err = dockerClient.RemoveEventListener(listener)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	for {
+		apiEvent := <-listener
+		if apiEvent.Type == "container" {
+			callback(apiEvent)
+		}
+	}
 }
