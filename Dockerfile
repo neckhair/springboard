@@ -13,7 +13,8 @@ RUN go-wrapper install
 
 # Copy the rest of the app
 COPY . ./
-RUN yarn install && node_modules/.bin/webpack
+RUN    yarn install \
+    && NODE_ENV=production node_modules/.bin/webpack --optimize-minimize
 
 
 FROM alpine:latest

@@ -5,13 +5,23 @@
   "repository": "https://github.com/neckhair/springboard",
   "author": "Philippe Hässig <phil@neckhair.ch>",
   "license": "MIT",
+  "scripts": {
+    "webpack": "webpack --devtool=source-maps -w"
+  },
   "dependencies": {
+    "babel-core": "~6.26.0",
+    "babel-loader": "~7.1.2",
     "css-loader": "~0.28.5",
-    "semantic-ui-container": "^2.2.12",
-    "semantic-ui-header": "^2.2.12",
+    "semantic-ui-container": "~2.2.12",
+    "semantic-ui-header": "~2.2.12",
+    "semantic-ui-label": "^2.2.12",
     "semantic-ui-site": "~2.2.12",
     "semantic-ui-table": "~2.2.12",
     "style-loader": "~0.18.2",
+    "vue": "~2.4.2",
+    "vue-loader": "~13.0.4",
+    "vue-template-compiler": "~2.4.2",
+    "vuex": "~2.3.1",
     "webpack": "~3.5.5"
   }
 }
