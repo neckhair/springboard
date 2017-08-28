@@ -10,22 +10,9 @@
       </thead>
       <tbody>
         <tr v-if="containers.length == 0">
-          <td colspan="4">Start a container to see it here.</td>
+          <td colspan="3">Start a container to see it here.</td>
         </tr>
-        <tr v-for="container in containers">
-          <td>
-            <div class="ui green label" v-if="container.attributes['com.docker.compose.project']">
-              {{ container.attributes['com.docker.compose.project']}}</br>
-            </div>
-            <span v-if="container.attributes['com.docker.compose.service']">
-              {{ container.attributes['com.docker.compose.service'] }}</br>
-            </span>
-            <span v-else>
-              {{ container.attributes.name }}
-            </span>
-          </td>
-          <td> {{ container.attributes.image }} </td>
-        </tr>
+        <container-line v-for="container in containers" :container="container" :key="container.id" />
       </tbody>
     </table>
   </div>
@@ -33,10 +20,15 @@
 
 <script>
 import 'semantic-ui-table/table.css'
-import 'semantic-ui-label/label.css'
+
 import { mapGetters, mapActions } from 'vuex'
 
+import ContainerTableLine from './ContainerTableLine.vue'
+
 export default {
+  components: {
+      'container-line': ContainerTableLine
+  },
   computed: mapGetters(['containers']),
   methods: mapActions([]),
   created () {

@@ -45,10 +45,10 @@ const actions = {
     state.socket.onmessage = msg => {
       var event = JSON.parse(msg.data)
       switch(event.action) {
-        case "start":
+        case "create":
           commit('addContainer', event.actor)
           break
-        case "die":
+        case "destroy":
           commit('removeContainer', event.actor)
           break
       }
