@@ -30,6 +30,18 @@ func FetchContainers() []docker.APIContainers {
 	return containers
 }
 
+func FetchContainer(id string) *docker.Container {
+	if dockerClient == nil {
+		panic("Docker client not initialized!")
+	}
+
+	container, err := dockerClient.InspectContainer(id)
+	if err != nil {
+		panic(err)
+	}
+	return container
+}
+
 type APIEvents = docker.APIEvents
 type ContainerEventCallbackFunction func(*APIEvents)
 

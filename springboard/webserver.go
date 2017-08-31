@@ -24,7 +24,9 @@ func StartWebserver(port string) {
 	defer func() { m.Close() }()
 
 	router.Static("/assets", "./assets")
-	router.GET("/", serveContainers)
+	router.GET("/", serveRoot)
+	router.GET("/api/containers", serveContainers)
+	router.GET("/api/containers/:id", serveContainer)
 	router.GET("/ws", func(c *gin.Context) {
 		m.HandleRequest(c.Writer, c.Request)
 	})
@@ -33,10 +35,17 @@ func StartWebserver(port string) {
 	router.Run(":" + port)
 }
 
+func serveRoot(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{})
+}
+
 func serveContainers(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{
-		"containers": FetchContainers(),
-	})
+	c.JSON(http.StatusOK, FetchContainers())
+}
+
+func serveContainer(c *gin.Context) {
+	id := c.Param("id")
+	c.JSON(http.StatusOK, FetchContainer(id))
 }
 
 func broadcastContainerEvent(apiEvent *APIEvents) {
