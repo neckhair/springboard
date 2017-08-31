@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -10,32 +11,61 @@ const state = {
   socket: null
 }
 
-// mutations are operations that actually mutates the state.
-// each mutation handler gets the entire state tree as the
-// first argument, followed by additional payload arguments.
-// mutations must be synchronous and can be recorded by plugins
-// for debugging purposes.
 const mutations = {
   addContainer (state, container) {
-    state.containers.push(container)
+    var index = state.containers.findIndex(c => c.Id == container.Id)
+    if ( index < 0 ) {
+      state.containers.push(container)
+    }
   },
-  removeContainer (state, container) {
-    var index = state.containers.findIndex(c => c.id == container.id)
-    if (index >= 0) {
+  updateContainer (state, container) {
+    var index = state.containers.findIndex(c => c.Id == container.Id)
+    if ( index >= 0 ) {
+      state.containers.splice(index, 1, container)
+    }
+  },
+  removeContainer (state, containerId) {
+    var index = state.containers.findIndex(c => c.Id == containerId)
+    if ( index >= 0 ) {
       state.containers.splice(index, 1)
     }
   }
 }
 
-// actions are functions that cause side effects and can involve
-// asynchronous operations.
 const actions = {
-  fetchAllContainers ({ commit, state }) {
-    // for container in containers
-    // commit('addContainer')
-    console.log('Fetching all containers...')
+  fetchAllContainers ({ dispatch, state }) {
+    axios.get('/api/containers').then(response => {
+      for( var container of response.data ) {
+        dispatch('addContainerFromId', container.Id)
+      }
+    }).catch(error => console.error(error))
   },
-  listenForEvents ({ commit, state }) {
+  addContainerFromId (context, containerId) {
+    axios.get(`/api/containers/${containerId}`).then(response => {
+      var index = state.containers.findIndex(c => c.Id == containerId)
+      if ( index < 0 ) {
+        context.commit('addContainer', response.data)
+      } else {
+        context.commit('updateContainer', response.data)
+      }
+    }).catch(error => console.error(error))
+  },
+  updateContainer (context, containerId) {
+    axios.get(`/api/containers/${containerId}`).then(response => {
+      context.commit('updateContainer', response.data)
+    }).catch(error => console.error(error))
+  },
+
+  // the following actions represent container events
+  create  (context, containerId) { context.dispatch('addContainerFromId', containerId) },
+  start   (context, containerId) { context.dispatch('addContainerFromId', containerId) },
+  attach  (context, containerId) { context.dispatch('updateContainer', containerId) },
+  kill    (context, containerId) { context.dispatch('updateContainer', containerId) },
+  stop    (context, containerId) { context.dispatch('updateContainer', containerId) },
+  die     (context, containerId) { context.dispatch('updateContainer', containerId) },
+  destroy (context, containerId) { context.commit('removeContainer', containerId) },
+
+  listenForEvents ({ dispatch, commit, state }) {
     if (state.socket != null) {
       return
     }
@@ -44,21 +74,15 @@ const actions = {
 
     state.socket.onmessage = msg => {
       var event = JSON.parse(msg.data)
-      switch(event.action) {
-        case "create":
-          commit('addContainer', event.actor)
-          break
-        case "destroy":
-          commit('removeContainer', event.actor)
-          break
-      }
+      console.debug(`Got ${event.action} event for container ${event.actor.attributes.name}`)
+      dispatch(event.action, event.actor.id)
     }
   }
 }
 
 // getters are functions
 const getters = {
-  containers: state => state.containers
+  containers: state => state.containers,
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

@@ -8,12 +8,15 @@
         {{ service }}</br>
       </span>
       <span v-else>
-        {{ container.attributes.name }}
+        {{ sanitizedName }}
       </span>
     </td>
-    <td>{{ container.attributes.image }}</td>
+    <td>{{ container.Config.Image }}</td>
     <td>
-      {{ container.status }}
+      {{ container.State.Status }}
+    </td>
+    <td>
+      <port-link v-for="port in mappedPorts" :port="port[0]" :key="port[0].HostPort" />
     </td>
   </tr>
 </template>
@@ -22,11 +25,22 @@
 import 'semantic-ui-table/table.css'
 import 'semantic-ui-label/label.css'
 
+import ContainerPortLink from './ContainerPortLink.vue'
+
 export default {
   props: ['container'],
+  components: {
+    'port-link': ContainerPortLink
+  },
   computed: {
-    project: function () { this.container.attributes['com.docker.compose.project'] },
-    service: function () { this.container.attributes['com.docker.compose.service'] }
+    labels:        (component) => component.container.Config.Labels || {},
+    project:       (component) => component.labels['com.docker.compose.project'],
+    service:       (component) => component.labels['com.docker.compose.service'],
+    sanitizedName: (component) => component.container.Name.replace(/^\//, ""),
+    ports:         (component) => component.container.NetworkSettings.Ports,
+    mappedPorts:   (component) => Object.values(component.ports || []).filter(value => {
+      return value != null
+    })
   }
 }
 </script>

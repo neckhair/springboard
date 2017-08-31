@@ -13,40 +13,7 @@
     <h1 class="ui inverted block header">Containers</h1>
 
     <div id="container-table">
-
     </div>
-
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Public Ports</th>
-        </tr>
-      </thead>
-      {{range $idx, $c := .containers }}
-      <tr>
-        <td> {{ printf "%.15s" $c.ID }} </td>
-        <td> {{index $c.Names 0}} </td>
-        <td> {{ $c.Image }} </td>
-        <td>
-          {{range $idx, $port := $c.Ports}}
-            {{if gt $port.PublicPort 0}}
-              <a href="http://localhost:{{$port.PublicPort}}">
-                http://localhost:{{$port.PublicPort}}
-              </a>
-              {{if not (eq $port.PublicPort $port.PrivatePort)}}
-              ({{$port.PrivatePort}})
-              {{end}}
-              <br/>
-            {{end}}
-            </br/>
-          {{end}}
-        </td>
-      </tr>
-      {{end}}
-    </table>
-
   </div>
 
   <script type="text/javascript" src="/assets/bundle.js"></script>

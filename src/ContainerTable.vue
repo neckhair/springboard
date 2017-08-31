@@ -5,7 +5,8 @@
         <tr>
           <th>Name or Service</th>
           <th>Image</th>
-          <th>Public Ports</th>
+          <th>State</th>
+          <th>Ports</th>
         </tr>
       </thead>
       <tbody>
