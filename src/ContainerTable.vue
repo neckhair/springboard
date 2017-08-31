@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import 'semantic-ui-table/table.css'
-
 import { mapGetters, mapActions } from 'vuex'
 
 import ContainerTableLine from './ContainerTableLine.vue'
@@ -38,3 +36,7 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+  @import '~semantic-ui-table/table.css';
+</style>

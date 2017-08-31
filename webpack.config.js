@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function (env, argv) {
   return {
@@ -10,15 +11,29 @@ module.exports = function (env, argv) {
     },
     module: {
       rules: [
-        { test: /\.css$/, use: ['style-loader', 'css-loader'] },
-        { test: /\.vue$/, use: 'vue-loader' },
-      ],
-      loaders: [
-        { test: /\.js$/, loader: 'babel-loader', query: { presets: ['es2015'] } },
+        { test: /\.scss$/, loader: ExtractTextPlugin.extract('css-loader!sass-loader') },
+        { test: /\.vue$/,
+          use: {
+            loader: 'vue-loader',
+            options: {
+              loaders: {
+                sass: ExtractTextPlugin.extract('css-loader!sass-loader')
+              }
+            }
+          }
+        },
+        { test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader', options: { presets: ['env'] }
+          }
+        },
       ]
     },
     plugins: [
-
+      new ExtractTextPlugin('style.css', {
+        allChunks: true
+      })
     ],
   }
 }

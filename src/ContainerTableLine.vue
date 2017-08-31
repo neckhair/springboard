@@ -22,9 +22,6 @@
 </template>
 
 <script>
-import 'semantic-ui-table/table.css'
-import 'semantic-ui-label/label.css'
-
 import ContainerPortLink from './ContainerPortLink.vue'
 
 export default {
@@ -44,3 +41,8 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+  @import '~semantic-ui-label/label.css';
+
+</style>
