@@ -1,29 +1,47 @@
 var webpack = require('webpack');
 var path = require('path');
+
+var EXCLUDE = /node_modules|bower_components/;
+
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var extractPlugin = new ExtractTextPlugin({
+  filename: 'style.css',
+  allChunks: true,
+})
 
 module.exports = function (env, argv) {
   return {
-    entry: './src/main.js',
+    context: path.resolve('src'),
+    entry: './main.js',
     output: {
       path: path.resolve(__dirname, './assets'),
       filename: 'bundle.js'
     },
     module: {
       rules: [
-        { test: /\.scss$/, loader: ExtractTextPlugin.extract('css-loader!sass-loader') },
+        { test: /\.scss$/,
+          exclude: EXCLUDE,
+          loader: extractPlugin.extract({
+            use: ['css-loader', 'sass-loader'],
+            fallback: 'style-loader',
+          })
+        },
         { test: /\.vue$/,
+          exclude: EXCLUDE,
           use: {
             loader: 'vue-loader',
             options: {
               loaders: {
-                sass: ExtractTextPlugin.extract('css-loader!sass-loader')
+                sass: extractPlugin.extract({
+                  use: ['css-loader', 'sass-loader'],
+                  fallback: 'vue-style-loader',
+                })
               }
             }
           }
         },
         { test: /\.js$/,
-          exclude: /node_modules/,
+          exclude: EXCLUDE,
           use: {
             loader: 'babel-loader', options: { presets: ['env'] }
           }
@@ -31,8 +49,9 @@ module.exports = function (env, argv) {
       ]
     },
     plugins: [
-      new ExtractTextPlugin('style.css', {
-        allChunks: true
+      extractPlugin,
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': process.env.NODE_ENV
       })
     ],
   }

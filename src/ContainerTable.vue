@@ -38,5 +38,5 @@ export default {
 </script>
 
 <style lang="sass">
-  @import '~semantic-ui-table/table.css';
+  @import '~semantic-ui-sass/scss/collections/_table.scss';
 </style>

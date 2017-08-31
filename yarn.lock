@@ -3262,25 +3262,9 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-semantic-ui-container@~2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/semantic-ui-container/-/semantic-ui-container-2.2.12.tgz#bc1345dd798817bef98610eb6cb97c766217129b"
-
-semantic-ui-header@~2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/semantic-ui-header/-/semantic-ui-header-2.2.12.tgz#d0ace4fe0fd5e234aff9c960afe011f4e8be5b98"
-
-semantic-ui-label@^2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/semantic-ui-label/-/semantic-ui-label-2.2.12.tgz#e7bb6ca8ec59d057e3b936c75c70f2e08105f997"
-
-semantic-ui-site@~2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/semantic-ui-site/-/semantic-ui-site-2.2.12.tgz#67c2db23bbccd5ab2c00fd8c5cb53a60942e7aea"
-
-semantic-ui-table@~2.2.12:
-  version "2.2.12"
-  resolved "https://registry.yarnpkg.com/semantic-ui-table/-/semantic-ui-table-2.2.12.tgz#d3d925a5cfd8cdc9ef505930df8e9fd59c24cf04"
+semantic-ui-sass@~2.2.11:
+  version "2.2.11"
+  resolved "https://registry.yarnpkg.com/semantic-ui-sass/-/semantic-ui-sass-2.2.11.tgz#f77677cfc6ebe874f0da29e2787b64facccd1f4b"
 
 "semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.3.0:
   version "5.4.1"

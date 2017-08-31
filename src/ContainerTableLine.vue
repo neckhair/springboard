@@ -1,19 +1,19 @@
 <template>
   <tr>
     <td>
-      <div class="ui green label" v-if="project">
+      <span v-if="project">
         {{ project }}</br>
-      </div>
-      <span v-if="service">
-        {{ service }}</br>
       </span>
+      <strong v-if="service">
+        {{ service }}</br>
+      </strong>
       <span v-else>
         {{ sanitizedName }}
       </span>
     </td>
     <td>{{ container.Config.Image }}</td>
     <td>
-      {{ container.State.Status }}
+      <div :class="statusClass">{{ container.State.Status }}</div>
     </td>
     <td>
       <port-link v-for="port in mappedPorts" :port="port[0]" :key="port[0].HostPort" />
@@ -37,12 +37,24 @@ export default {
     ports:         (component) => component.container.NetworkSettings.Ports,
     mappedPorts:   (component) => Object.values(component.ports || []).filter(value => {
       return value != null
-    })
+    }),
+    statusClass:   (component) => `ui basic horizontal state label ${component.container.State.Status}`
   }
 }
 </script>
 
 <style lang="sass">
-  @import '~semantic-ui-label/label.css';
+  @import '~semantic-ui-sass/scss/elements/_label.scss';
 
+  .state {
+    &.created, &.paused {
+      @extend .yellow;
+    }
+    &.running {
+      @extend .green;
+    }
+    &.stopped, &.deleted, &.exited {
+      @extend .red;
+    }
+  }
 </style>
