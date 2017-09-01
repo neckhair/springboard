@@ -37,6 +37,9 @@ Gruntfile.js
 .*.yml
 *.yml
 
+# https://github.com/svg/svgo/issues/622
+!svgo/.svgo.yml
+
 # misc
 *.gz
 *.md
