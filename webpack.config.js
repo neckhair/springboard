@@ -1,20 +1,58 @@
 var webpack = require('webpack');
 var path = require('path');
 
-const Uglify = require("uglifyjs-webpack-plugin");
+var EXCLUDE = /node_modules|bower_components/;
 
-module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, './assets'),
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      { test: /\.(css)$/, use: ['style-loader', 'css-loader'] },
-    ]
-  },
-  plugins: [
-    new Uglify()
-  ]
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var extractPlugin = new ExtractTextPlugin({
+  filename: 'style.css',
+  allChunks: true,
+})
+
+module.exports = function (env, argv) {
+  return {
+    context: path.resolve('src'),
+    entry: './main.js',
+    output: {
+      path: path.resolve(__dirname, './assets'),
+      filename: 'bundle.js'
+    },
+    module: {
+      rules: [
+        { test: /\.scss$/,
+          exclude: EXCLUDE,
+          loader: extractPlugin.extract({
+            use: ['css-loader', 'sass-loader'],
+            fallback: 'style-loader',
+          })
+        },
+        { test: /\.vue$/,
+          exclude: EXCLUDE,
+          use: {
+            loader: 'vue-loader',
+            options: {
+              loaders: {
+                sass: extractPlugin.extract({
+                  use: ['css-loader', 'sass-loader'],
+                  fallback: 'vue-style-loader',
+                })
+              }
+            }
+          }
+        },
+        { test: /\.js$/,
+          exclude: EXCLUDE,
+          use: {
+            loader: 'babel-loader', options: { presets: ['env'] }
+          }
+        },
+      ]
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }),
+      extractPlugin,
+    ],
+  }
 }

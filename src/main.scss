@@ -1,0 +1,8 @@
+@import '~semantic-ui-sass/scss/globals/variables';
+@import '~semantic-ui-sass/scss/globals/site';
+@import '~semantic-ui-sass/scss/elements/header';
+@import '~semantic-ui-sass/scss/elements/container';
+
+h1.ui.block.header {
+  margin-top: 25px;
+}

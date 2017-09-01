@@ -8,45 +8,16 @@
 
   <title>Springboard</title>
 
-  <script type="text/javascript" src="/assets/bundle.js"></script>
+  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
   <div class="ui container">
     <h1 class="ui inverted block header">Containers</h1>
 
-    <table class="ui celled table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Image</th>
-          <th>Public Ports</th>
-        </tr>
-      </thead>
-      {{range $idx, $c := .containers }}
-      <tr>
-        <td> {{ printf "%.15s" $c.ID }} </td>
-        <td> {{index $c.Names 0}} </td>
-        <td> {{ $c.Image }} </td>
-        <td>
-          {{range $idx, $port := $c.Ports}}
-            {{if gt $port.PublicPort 0}}
-              <a href="http://localhost:{{$port.PublicPort}}">
-                http://localhost:{{$port.PublicPort}}
-              </a>
-              {{if not (eq $port.PublicPort $port.PrivatePort)}}
-              ({{$port.PrivatePort}})
-              {{end}}
-              <br/>
-            {{end}}
-            </br/>
-          {{end}}
-        </td>
-      </tr>
-      {{end}}
-    </table>
-
+    <div id="container-table">
+    </div>
   </div>
 
+  <script type="text/javascript" src="/assets/bundle.js"></script>
 </body>
 </html>
