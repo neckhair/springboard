@@ -2,17 +2,24 @@ package springboard
 
 import (
 	"log"
+	"os"
+	"fmt"
 
 	"github.com/fsouza/go-dockerclient"
 )
 
 var dockerClient *docker.Client
+const socketPath = "/var/run/docker.sock"
 
 // InitializeDockerClient creates a docker client and returns an error if not successful
 func InitializeDockerClient() error {
 	var err error
 
-	dockerClient, err = docker.NewClient("unix:///var/run/docker.sock")
+	if _, err = os.Stat(socketPath); os.IsNotExist(err) {
+		return fmt.Errorf("Cannot find Docker socket at %s", socketPath)
+	}
+
+	dockerClient, err = docker.NewClient("unix://" + socketPath)
 	return err
 }
 
