@@ -8,7 +8,8 @@ Vue.use(Vuex)
 // each Vuex instance is just a single state tree.
 const state = {
   containers: [],
-  socket: null
+  socket: null,
+  currentProject: null
 }
 
 const mutations = {
@@ -29,6 +30,9 @@ const mutations = {
     if ( index >= 0 ) {
       state.containers.splice(index, 1)
     }
+  },
+  setCurrentProject (state, project) {
+    state.currentProject = project
   }
 }
 
@@ -83,6 +87,16 @@ const actions = {
 // getters are functions
 const getters = {
   containers: state => state.containers,
+  currentProject: state => state.currentProject,
+  projects: state => {
+    return state.containers.map(container => {
+      if ( container.Config.Labels ) {
+        return container.Config.Labels['com.docker.compose.project']
+      } else {
+        return 'no project'
+      }
+    }).filter((value, index, self) => self.indexOf(value) === index).sort()
+  }
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,

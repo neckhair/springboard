@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr v-show="currentProject == project || currentProject == null">
     <td>
       <span v-if="project">
         {{ project }}</br>
@@ -23,6 +23,7 @@
 
 <script>
 import ContainerPortLink from './ContainerPortLink.vue'
+import { mapState } from 'vuex'
 
 export default {
   props: ['container'],
@@ -30,6 +31,7 @@ export default {
     'port-link': ContainerPortLink
   },
   computed: {
+    ...mapState(['currentProject']),
     labels:        (component) => component.container.Config.Labels || {},
     project:       (component) => component.labels['com.docker.compose.project'],
     service:       (component) => component.labels['com.docker.compose.service'],
