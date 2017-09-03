@@ -3,9 +3,11 @@
     <div class="ui vertical menu">
       <a @click="setCurrentProject(null)" :class="itemClasses(null)">
         All Projects
+        <div class="ui label">{{ projectsWithCount[null] }}</div>
       </a>
       <a v-for="project in projects" @click="setCurrentProject(project)" :class="itemClasses(project)">
         {{project}}
+        <div class="ui label">{{ projectsWithCount[project] }}</div>
       </a>
     </div>
   </div>
@@ -16,7 +18,7 @@ import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['projects']),
+    ...mapGetters(['projects', 'projectsWithCount']),
     ...mapState(['currentProject'])
   },
   methods: {

@@ -1,5 +1,7 @@
 <template>
-  <a :href="url">{{ url }}</a>
+  <div>
+    <a :href="url">{{ url }}</a>
+  </div>
 </template>
 
 <script>

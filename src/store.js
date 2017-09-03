@@ -96,6 +96,14 @@ const getters = {
         return 'no project'
       }
     }).filter((value, index, self) => self.indexOf(value) === index).sort()
+  },
+  projectsWithCount: function(state, context) {
+    return state.containers.reduce(function (prev, container) {
+      var project = container.Config.Labels ? container.Config.Labels['com.docker.compose.project'] : 'No Project'
+      if ( project in prev ) prev[project] ++;
+      else prev[project] = 1;
+      return prev;
+    }, { null: state.containers.length })
   }
 }
 
