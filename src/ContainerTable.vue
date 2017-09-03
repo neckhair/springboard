@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import ContainerTableLine from './ContainerTableLine.vue'
 
@@ -29,7 +29,6 @@ export default {
       'container-line': ContainerTableLine
   },
   computed: mapGetters(['containers']),
-  methods: mapActions([]),
   created () {
     this.$store.dispatch('fetchAllContainers')
     this.$store.dispatch('listenForEvents')
