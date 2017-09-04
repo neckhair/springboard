@@ -5,7 +5,7 @@ var EXCLUDE = /node_modules|bower_components/;
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractPlugin = new ExtractTextPlugin({
-  filename: 'style.css',
+  filename: '[name].css',
   allChunks: true,
 })
 
@@ -15,7 +15,7 @@ module.exports = function (env, argv) {
     entry: './main.js',
     output: {
       path: path.resolve(__dirname, './assets'),
-      filename: 'bundle.js'
+      filename: '[name].js'
     },
     module: {
       rules: [

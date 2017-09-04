@@ -1,18 +1,9 @@
-import './main.scss'
-
 import Vue from 'vue'
-import ContainerTable from './ContainerTable.vue'
-import ProjectSelector from './ProjectSelector.vue'
 import store from './store.js'
+import SpringboardApp from './SpringboardApp.vue'
 
 new Vue({
-  el: '#container-table',
+  el: "#springboard-app",
   store,
-  render: h => h(ContainerTable)
-})
-
-new Vue({
-  el: '#project-selector',
-  store,
-  render: h => h(ProjectSelector)
+  render: h => h(SpringboardApp)
 })

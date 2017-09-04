@@ -29,10 +29,6 @@ export default {
       'container-line': ContainerTableLine
   },
   computed: mapGetters(['containers']),
-  created () {
-    this.$store.dispatch('fetchAllContainers')
-    this.$store.dispatch('listenForEvents')
-  }
 }
 </script>
 
