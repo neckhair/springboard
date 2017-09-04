@@ -11,5 +11,5 @@ Springboard is a tiny, little front-end for your local Docker instance. It just 
 Assuming you have installed Go, NodeJS and Yarn you can just run the following commands:
 
     $ yarn install
-    $ npm run webpack
+    $ npm run watch
     $ go run main.go

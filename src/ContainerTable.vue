@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <tr v-if="containers.length == 0">
-          <td colspan="3">Start a container to see it here.</td>
+          <td colspan="4">Start a container to see it here.</td>
         </tr>
         <container-line v-for="container in containers" :container="container" :key="container.id" />
       </tbody>

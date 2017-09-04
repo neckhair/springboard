@@ -6,7 +6,7 @@
   "author": "Philippe Hässig <phil@neckhair.ch>",
   "license": "MIT",
   "scripts": {
-    "webpack": "webpack --devtool=source-maps -w"
+    "watch": "webpack --devtool=source-maps -w"
   },
   "dependencies": {
     "axios": "~0.16.2",
